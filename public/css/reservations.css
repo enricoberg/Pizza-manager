@@ -1,0 +1,42 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(25, 1fr);
+    
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    padding: 8px;
+  }
+  
+  .grid-item {
+    border: 1px solid black;
+    font-size: 20px;
+    padding: 8px;
+    text-align: center;
+    
+  }
+  .n0{ width: 100px;}
+  .n00{ width: 100px;}
+  .gridfirstrow{ font-weight: bolder;
+    font-size: 22px;
+    background-color: rgb(169, 214, 252);}
+#dateselector{
+    height: 35px;
+    margin: 5px;
+    width: 200px;
+    font-size: 20px;
+}
+#labeldate{
+  font-size: 20px;
+  margin-left: 15px;
+  font-weight: bold;
+}
+.greencolored{
+  background-color: #85FFBD;
+  background-image: linear-gradient(45deg, #85FFBD 0%, #FFFB7D 100%);
+
+}
+.redcolored{
+  background-color: #FFE53B;
+  background-image: linear-gradient(147deg, #FFE53B 0%, #FF2525 74%);
+  
+}

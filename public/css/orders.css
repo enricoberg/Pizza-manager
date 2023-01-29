@@ -1,0 +1,45 @@
+.rigaordine{    
+                
+                margin-right: auto;
+                margin-left: 15px;
+                width: 98vw;
+                height: 30px;
+}
+.ordcol{
+    
+        
+        height: 30px;
+        border: 1px solid rgb(182, 182, 182);
+        float: left;
+        
+        text-align: center;
+        font-size: 20px;
+        line-height: 30px;
+        color: rgb(105, 105, 105);
+}
+.ordcol.n0{
+        width: 100px;
+        }
+.ordcol.n1{
+        width: 200px;
+        }
+.ordcol.n2{
+            width: 200px;
+            }
+.ordcol.n3{
+                width: 300px;
+                }
+.ordcol.n4{
+                    width: 200px;
+                    }
+.ordcol.n5{
+                        display: none;
+                        }
+#rigaintestazioni .ordcol{
+    font-weight: bolder;
+    font-size: 22px;
+    background-color: rgb(169, 214, 252);
+    
+    
+}
+#rigaintestazioni{ margin-top: 10px;}

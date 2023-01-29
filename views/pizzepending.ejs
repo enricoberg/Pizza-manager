@@ -1,0 +1,45 @@
+<form action="/remove-pizza" method="post" id="orderform" style="display: none;">
+    <input type="text" id="selettoreordine" name="selettoreordine">
+</form>
+<div class="rigaordine" id="rigaintestazioni">
+    <div class="ordcol n0">ID</div>
+    
+    <div class="ordcol n2">PIZZA</div>
+    <div class="ordcol n3"> ORDER TIME</div>
+    
+</div>
+<%  
+for(let i of risultato) {  %>
+<div class="rigaordine" >
+    <div class="ordcol n0"><%=i.id%></div>
+    
+    <div class="ordcol n2"><%=i.name%></div>
+    <div class="ordcol n3"><%=i.odate%></div>
+    
+</div>
+<% } %>
+<script>
+    const pulsanti = document.querySelectorAll('.ordcol.n2');
+    
+    for (i=1; i<pulsanti.length;i++){
+        
+        pulsanti[i].style.color ='rgb(0,255,0)';
+        pulsanti[i].addEventListener('click',()=>{
+            const target=event.target;
+                    const padre = target.closest('.rigaordine');
+                    const nrordine = padre.querySelector('.ordcol.n0').innerHTML;
+                    
+            let text = `Do you confirm you want to remove pizza nr. ${nrordine}?`;
+            if (confirm(text) == true) {
+                document.querySelector('#selettoreordine').value = nrordine;
+                document.querySelector('#orderform').submit();
+            } 
+
+        }); 
+    
+    }
+    window.setInterval(()=>{ 
+        location.reload();}, 25000);
+    
+    
+</script>

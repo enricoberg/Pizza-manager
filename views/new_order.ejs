@@ -1,0 +1,185 @@
+<div id="container">
+    
+    <label for="tablecombo" id="labeltable">Table:</label>
+    <select name="tablecombo" id="tablecombo">
+
+    </select>
+    <br>
+    <label for="dishcombo" id="labeldish" >Dish</label>
+    <select name="dishcombo" id="dishcombo"></select>
+    <button class="add_dish" id="add_dish">ADD</button>
+    <button id="sendorder">SEND ORDER</button>
+    <div id="buttoncontainer">
+        <button class="categorybtn">PIZZA</button>
+        <button class="categorybtn">DOLCE</button>
+        <button class="categorybtn">BIBITA</button>
+        <button class="categorybtn">ANTIPASTO</button>
+        <button class="categorybtn">COPERTO</button>
+    </div>
+    </div>
+
+    <script>
+        const ordini = [];
+        //carico solamente i tavoli che non hanno ordini attivi
+        const xhr = new XMLHttpRequest();
+                        xhr.open('GET', `/load-tables`);
+                        xhr.onload = function() {
+                            
+                            if (xhr.status === 200) {
+                                const response = JSON.parse(xhr.responseText);
+                                if (!response.success) {
+                                
+                                    
+                   
+                                  } else{
+                    
+                                        const selectElement = document.querySelector('#tablecombo');
+                                                        
+                                        
+                                        for (let i=0; i<response.message.length;i++){
+                                            const optionElement = document.createElement('option');
+                                            
+                                            optionElement.value = response.message[i].table_id;
+                                            optionElement.text = response.message[i].table_id;
+
+                                            
+                                            selectElement.add(optionElement);
+                                        }
+                                }
+                            }
+                            
+                        }
+        xhr.send();
+
+
+        //carico i dati nel selettore
+         const bottonicategoria =document.querySelectorAll('.categorybtn')
+         for (let i=0; i<bottonicategoria.length; i++ ){ 
+            bottonicategoria[i].addEventListener('click', function() {
+               
+                        const categoria = this.innerHTML;
+
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('GET', `/load-menu/${categoria}`);
+                        xhr.onload = function() {
+                            
+                            if (xhr.status === 200) {
+                                const response = JSON.parse(xhr.responseText);
+                                if (!response.success) {
+                                
+                                    alert('Found nothing')
+                   
+                                  } else{
+                    
+                                        const selectElement = document.querySelector('#dishcombo');
+                                                        
+                                        while (selectElement.firstChild) {  selectElement.removeChild(selectElement.firstChild); } 
+                                        for (let i=0; i<response.message.length;i++){
+                                            const optionElement = document.createElement('option');
+                                            
+                                            optionElement.value = response.message[i].dish;
+                                            optionElement.text = response.message[i].dish;
+
+                                            
+                                            selectElement.add(optionElement);
+                                        }
+                                }
+                            }
+                            
+                        }
+        xhr.send();
+        });
+         }
+                        //gestisco il cambio di quantita
+                        function changeQuantities(){      
+        const addqty=document.querySelectorAll('.addqty');
+        const lessqty=document.querySelectorAll('.lessqty');
+        for (let i=0;i<addqty.length;i++)
+        {
+            addqty[i].addEventListener('click',()=>{
+                
+                    const target=event.target;
+                    const padre = target.closest('.listaordine');
+                    const dish = padre.querySelector('.dish').innerHTML;
+                    
+                    for (let j=0;j<ordini.length;j++)
+                    {
+                        if (ordini[j].name===dish) {ordini[j].quantity++; break;}
+                    }
+                    renderOrders();
+                    
+            })
+        }
+        for (let i=0;i<lessqty.length;i++)
+        {
+            lessqty[i].addEventListener('click',()=>{
+                
+                    const target=event.target;
+                    const padre = target.closest('.listaordine');
+                    const dish = padre.querySelector('.dish').innerHTML;
+                    
+                    for (let j=0;j<ordini.length;j++)
+                    {
+                        if (ordini[j].name===dish) {ordini[j].quantity--;
+                             if (ordini[j].quantity==0){ ordini.splice(j,1);}
+                             break;
+                            }
+                    }
+                    renderOrders();
+                    
+            })
+        }
+        }
+         function renderOrders(){
+            const targheVecchie = document.querySelectorAll('.listaordine');
+            targheVecchie.forEach(element => element.remove());
+
+        for (let i=0; i< ordini.length; i++)
+        {
+        const div = document.createElement('div');
+        div.className = 'listaordine';
+        div.innerHTML = `
+        <div class="listmod dish">${ordini[i].name}</div>
+        <div class="listmod qty">${ordini[i].quantity}</div>
+        <div class="listmod addqty">+</div>
+        <div class="listmod lessqty">-</div> 
+        `;
+        container.prepend(div);
+        }
+        changeQuantities();
+        
+         }
+         //  aggiungo piatto alla listsa
+       document.querySelector('#add_dish').addEventListener('click',()=>{
+        const lista = document.querySelector('.listaordine');
+        const nuovoPiatto = document.querySelector('#dishcombo').value;
+        const container= document.querySelector('#container');
+        let found=false;
+        for(const object of ordini) //aggiungo il nuovo piatto alla lista, se gia presente ne aumento la quantita
+        {
+            if(object.name===nuovoPiatto){
+                object.quantity++;
+                found=true;
+                break;
+            }
+        }
+        if (!found) ordini.push({name: nuovoPiatto, quantity: 1})
+            //carico a schermo la lista degli oggetti presenti nell'ordine
+            
+         renderOrders();
+
+       });
+
+       //invio ordine
+       document.querySelector('#sendorder').addEventListener('click', ()=>{
+
+            
+            
+            if(ordini.length!=0) {
+                ordini.push(document.querySelector('#tablecombo').value)
+                const queryString = encodeURIComponent(JSON.stringify(ordini));
+                window.location.href = `/send-order?ordini=${queryString}`;}
+                else{ alert('You cannot send an empty order')}
+                    
+       } );
+    </script>

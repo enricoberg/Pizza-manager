@@ -1,0 +1,169 @@
+
+<head>
+    <link rel="stylesheet" type="text/css" href= "../css/reservations.css">
+</head>
+<body>
+    <label for="dateselector" id="labeldate">SELECT RESERVATION DAY:</label>
+    <input type="date" name="dateselector" id="dateselector">
+    <div class="grid-container">
+        <div class="grid-item n0 gridfirstrow">TABLE</div>
+        <div class="grid-item n00 gridfirstrow">SEAT</div>
+        <div class="grid-item n1 gridfirstrow">18:30</div>
+        <div class="grid-item n2 gridfirstrow">18:45</div>
+        <div class="grid-item n3 gridfirstrow">19:00</div>
+        <div class="grid-item n4 gridfirstrow">19:15</div>
+        <div class="grid-item n5 gridfirstrow">19:30</div>
+        <div class="grid-item n6 gridfirstrow">19:45</div>
+        <div class="grid-item n7 gridfirstrow">20:00</div>
+        <div class="grid-item n8 gridfirstrow">20:15</div>
+        <div class="grid-item n9 gridfirstrow">20:30</div>
+        <div class="grid-item n10 gridfirstrow">20:45</div>
+        <div class="grid-item n11 gridfirstrow">21:00</div>
+        <div class="grid-item n12 gridfirstrow">21:15</div>
+        <div class="grid-item n13 gridfirstrow">21:30</div>
+        <div class="grid-item n14 gridfirstrow">21:45</div>
+        <div class="grid-item n15 gridfirstrow">22:00</div>
+        <div class="grid-item n16 gridfirstrow">22:15</div>
+        <div class="grid-item n17 gridfirstrow">22:30</div>
+        <div class="grid-item n18 gridfirstrow">22:45</div>
+        <div class="grid-item n19 gridfirstrow">23:00</div>
+        <div class="grid-item n20 gridfirstrow">23:15</div>
+        <div class="grid-item n21 gridfirstrow">23:30</div>
+        <div class="grid-item n22 gridfirstrow">23:45</div>
+        <div class="grid-item n23 gridfirstrow" id="intestationlastitem">24:00</div>
+        
+        
+      
+</body>
+<script>
+    let currentTime =  new Date();
+    let mese= Number(currentTime.getMonth())+1;
+    if (mese<10) mese = '0' + mese
+    const giorno= Number(currentTime.getDate());
+    currentTime =  currentTime.getFullYear() + '-' + mese + '-' + currentTime.getDate() 
+    document.querySelector('#dateselector').value= currentTime;
+
+    function refreshReservation(){
+    
+    const resetItems = document.querySelectorAll('.grid-item:not(.gridfirstrow)');
+    for (let k=0; k<resetItems.length; k++){ resetItems[k].remove();}
+    //GENERO HTML PER TUTTI I TAVOLI--------------------------------------------------------------
+    const xhr3 = new XMLHttpRequest();
+                        xhr3.open('GET', `/reservations/load-all-tables`);
+                        xhr3.onload = function() {
+                            
+                            if (xhr3.status === 200) {
+                                const response = JSON.parse(xhr3.responseText);
+                                if (!response.success) {
+                                
+                                    alert('Found nothing')
+                   
+                                  } else{
+                                    let targetDiv = document.querySelector('#intestationlastitem');
+                                    for(let i=response.message.length-1; i>=0; i--){
+                                        let newHtml = `	<div class="grid-item n0 ">${response.message[i].table_id}</div>
+                                                        <div class="grid-item n00">${response.message[i].seats}</div>
+                                                        <div class="grid-item n1"></div>
+                                                        <div class="grid-item n2"></div>
+                                                        <div class="grid-item n3 "></div>
+                                                        <div class="grid-item n4 "></div>
+                                                        <div class="grid-item n5 "></div>
+                                                        <div class="grid-item n6"></div>
+                                                        <div class="grid-item n7 " ></div>
+                                                        <div class="grid-item n8"></div>
+                                                        <div class="grid-item n9"></div>
+                                                        <div class="grid-item n10"></div>
+                                                        <div class="grid-item n11 "></div>
+                                                        <div class="grid-item n12 "></div>
+                                                        <div class="grid-item n13 "></div>
+                                                        <div class="grid-item n14"></div>
+                                                        <div class="grid-item n15"></div>
+                                                        <div class="grid-item n16"></div>
+                                                        <div class="grid-item n17"></div>
+                                                        <div class="grid-item n18"></div>
+                                                        <div class="grid-item n19"></div>
+                                                        <div class="grid-item n20"></div>
+                                                        <div class="grid-item n21"></div>
+                                                        <div class="grid-item n22"></div>
+                                                        <div class="grid-item n23"></div>`;
+                                                        targetDiv.insertAdjacentHTML('afterend', newHtml);      
+                                    }
+                            }
+                            
+                        }
+                    }
+        xhr3.send();
+    //----------------------------------------------------------------------------------------------
+    //REFRESHO IL CONTENUTO DELLE RESERVATIONS-----------------------------------------------------
+    const xhr = new XMLHttpRequest();
+                        xhr.open('GET', `/reservations/get-all-res?dataordini=${document.querySelector('#dateselector').value}`);
+                        console.log(document.querySelector('#dateselector').value)
+                        xhr.onload = function() {
+                            
+                            if (xhr.status === 200) {
+                                const response = JSON.parse(xhr.responseText);
+                                if (!response.success) {
+                                
+                                    alert('Found nothing')
+                   
+                                  } else{
+                                    let tavoliprenotati = response.tavoliprenotati;
+                                    let slotprenotati=response.slotprenotati;
+                                    let seatsprenotati=response.seatsprenotati;
+                                        
+
+
+
+
+                                    let pulsantislot = document.querySelectorAll('.grid-item:not(.n0):not(.n00):not(.gridfirstrow)'); 
+                                    
+                                    for (let i=0; i< pulsantislot.length; i++){
+                                                        
+                                                        let classe = pulsantislot[i].classList;
+                                                        // console.log(classe[1])
+                                                        let closestN00 = pulsantislot[i].previousElementSibling;
+                                                        while(closestN00) {
+                                                        if(closestN00.classList.contains('n00')) {
+                                                            break;
+                                                        }
+                                                        closestN00 = closestN00.previousElementSibling;
+                                                        }
+                                                        let closestN0 = pulsantislot[i].previousElementSibling;
+                                                        while(closestN0) {
+                                                        if(closestN0.classList.contains('n0')) {
+                                                            break;
+                                                        }
+                                                        closestN0 = closestN0.previousElementSibling;
+                                                        }
+                                                        closestN0=closestN0.innerHTML;
+                                                        closestN00=closestN00.innerHTML;
+
+                                                        for(let j=0; j<tavoliprenotati.length;j++) {
+                                                            
+                                                            //console.log(`classe=${classe}; slot=${slotprenotati[j]}; closestN0 = ${closestN0}; tavolo = ${tavoliprenotati[j]}`);
+                                                            if( classe[1] == slotprenotati[j] && closestN0 == tavoliprenotati[j]){pulsantislot[i].classList.add("greencolored");
+                                                                                                                                    pulsantislot[i].innerHTML=`${seatsprenotati[j]}/${closestN00}`;        
+                                                                                                                                }
+                                                        }   
+
+
+                                                        pulsantislot[i].addEventListener('click', ()=>{ 
+                                                        
+                                                        const selectedDate = document.querySelector('#dateselector').value;
+                                                        window.location.href = `/reservations/new?tablenr=${closestN0}&seatnr=${closestN00}&hourslot=${classe[1]}&res_date=${selectedDate}`;
+
+
+                                            })
+    }
+                            }
+                            
+                        }
+                    }
+        xhr.send();
+
+    //---------------------------------------------------------------------------------------------
+}  
+    refreshReservation();
+    document.querySelector('#dateselector').addEventListener('change', ()=>{ refreshReservation();});
+
+</script>

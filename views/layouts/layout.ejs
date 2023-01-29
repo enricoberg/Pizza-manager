@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title  >Pizza Manager</title>
+    <link rel="stylesheet" type="text/css" href= "css/general_style.css">
+    <link rel="stylesheet" type="text/css" href= "../css/general_style.css">
+    <link rel="stylesheet" type="text/css" href= "css/neworder.css">
+    <link rel="stylesheet" type="text/css" href= "css/orders.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div id="logoscritta" onclick="window.location.href = '/';" >&#127829 PIZZA MANAGER</div>
+        <nav>
+            <a id="link1" href="/logout">LOGOUT</a>  
+            <a id="link2" href="/login">LOGIN</a> 
+            <a id="link3" href="/signup">SIGNUP</a> 
+        </nav>
+      
+
+    </header>
+    <script>
+  
+
+
+
+        const xhr2 = new XMLHttpRequest();
+        xhr2.open('GET', `/updatelayout`);
+        xhr2.onload = function() {
+            
+            if (xhr2.status === 200) {
+            const response = JSON.parse(xhr2.responseText);
+            if (!response.success) {
+                // The username is not available
+                
+               // alert(response.message);
+        } else{ ruolo = response.message;
+                
+                switch(ruolo){
+                    case "admin":
+                        document.querySelector('#link1').innerHTML = "ORDERS"
+                        document.querySelector('#link2').innerHTML = "PIZZAS"
+                        document.querySelector('#link3').innerHTML = "LOGOUT"
+                        document.querySelector('#link1').href="/orders"
+                        document.querySelector('#link2').href="/pizzepending"
+                        document.querySelector('#link3').href="/logout"
+                    break;
+                    case "waiter":
+                        document.querySelector('#link1').innerHTML = "ORDERS"
+                        document.querySelector('#link2').innerHTML = "NEW ORDER"
+                        document.querySelector('#link3').innerHTML = "LOGOUT"
+                        document.querySelector('#link1').href="/orders"
+                        document.querySelector('#link2').href="/neworder"
+                        document.querySelector('#link3').href="/logout"
+                    break;
+                    case "cashier":
+                        document.querySelector('#link1').innerHTML = "ORDERS"
+                        document.querySelector('#link2').innerHTML = "HOMEPAGE"
+                        document.querySelector('#link3').innerHTML = "LOGOUT"
+                        document.querySelector('#link1').href="/orders"
+                        document.querySelector('#link2').href="/orders"
+                        document.querySelector('#link3').href="/logout"
+                    break;
+                    case "cook":
+                        document.querySelector('#link1').innerHTML = "PIZZAS"
+                        document.querySelector('#link2').innerHTML = "HOMEPAGE"
+                        document.querySelector('#link3').innerHTML = "LOGOUT"
+                        document.querySelector('#link1').href="/pizzepending"
+                        document.querySelector('#link2').href="/pizzepending"
+                        document.querySelector('#link3').href="/logout"
+                    break;
+                }
+
+        }
+        }
+    };
+    xhr2.send();
+
+</script>
+    <%- body %>
+    <footer></footer>
+    
+</body>
+
+</html>

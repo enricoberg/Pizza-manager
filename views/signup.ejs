@@ -1,0 +1,128 @@
+
+    <form action="/signup" method="post" id="signupform">
+        <div class="formrow">
+            <label for="nickname">User Name:</label>
+            <input type="text" id="nickname" name="nickname" required><div class="alert nickname" id="alertnick"></div>
+        </div>
+        <div class="formrow">
+            <label for="username">Email:</label>
+        <input type="email" id="username" name="username" required><div class="alert username" id="alertuser"></div>
+        </div>
+
+        <div class="formrow">
+            <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><div class="alert password" id="alertpassword"></div>
+        </div>
+
+        
+        <div class="formrow">
+            <label for="passwordrepeat">Repeat Password:</label>
+            <input type="password" id="passwordrepeat" name="passwordrepeat" required><div class="alert prepeat" id="alertprepeat"></div>
+        </div>
+
+       
+        
+        <div class="formrow">
+            <label for="comborole">User Role:</label>
+        <select name="comborole" id="comborole">
+            <option value="waiter">Waiter</option>
+            
+            <option value="cashier">Cashier</option>
+            <option value="cook">Cook</option>
+        </select>
+        </div>
+
+        
+        
+        <div class="formrow">
+            <input type="submit" value="Sign up" disabled id="submitbutton">
+        </div>
+    </form>
+    <br>
+    <div class="formrow">
+        <a href="/login">OR LOGIN</a>
+    </div>
+    
+<script>
+    //ALERT se le password non coincidono
+    function checkoPassword(){
+        
+        const pw1=document.querySelector('#password').value;
+        const pw2=document.querySelector('#passwordrepeat').value;
+        if (pw1!=pw2) { document.querySelector('#alertprepeat').innerHTML='Passwords are not matching';
+                        return false;}
+        else { document.querySelector('#alertprepeat').innerHTML='';
+             return true;
+            }
+    }
+    
+    
+    // aggiungo AJAX call per controllare che la mail non esista già
+    document.getElementById('username').addEventListener('input', function() {
+            const username = this.value;
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `/check-username/${username}`);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                if (!response.success) {
+                    // The username is not available
+                    document.querySelector('#alertuser').innerHTML=response.message
+                    document.querySelector('#submitbutton').disabled=true;
+                   // alert(response.message);
+            } else{document.querySelector('#alertuser').innerHTML="";
+                    document.querySelector('#submitbutton').disabled=false; }
+            }
+        };
+        xhr.send();
+    });
+
+  // aggiungo AJAX call per controllare che il nickname non esista già
+  document.getElementById('nickname').addEventListener('input', function() {
+            const nickname = this.value;
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `/check-nickname/${nickname}`);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                if (!response.success) {
+                    // The username is not available
+                    document.querySelector('#alertnick').innerHTML=response.message
+                    document.querySelector('#submitbutton').disabled=true;
+                   // alert(response.message);
+            } else{document.querySelector('#alertnick').innerHTML="";
+                    document.querySelector('#submitbutton').disabled=false; }
+            }
+        };
+        xhr.send();
+    });
+
+    //mando alert se la password e' troppo debole
+    document.querySelector('#password').addEventListener('input', function(){
+        const password=document.querySelector('#password').value
+        if (password.length<8) { document.querySelector('#alertpassword').innerHTML='Weak password' }
+        else {document.querySelector('#alertpassword').innerHTML=''}
+
+    });
+    //mando alert se le password non coincidono
+    document.querySelector('#password').addEventListener('input', checkoPassword);
+    document.querySelector('#passwordrepeat').addEventListener('input', checkoPassword);
+    //Controlli prima del SUBMIT
+    document.getElementById('signupform').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const check1 = document.querySelector('#alertuser').innerHTML;
+        const check2 = document.querySelector('#alertpassword').innerHTML;
+        const check3 = document.querySelector('#alertnick').innerHTML;
+        if (checkoPassword() && check1=='' && check2 =='' && check3 =='' ) {
+            // The credentials are valid, so we can submit the form
+            this.submit();
+        } else {
+            // The credentials are invalid, so we'll display an error message
+            alert('Invalid credentials');
+        }
+    });
+
+
+</script> 

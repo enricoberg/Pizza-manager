@@ -1,0 +1,102 @@
+<head>
+    <link rel="stylesheet" type="text/css" href= "../css/newreservation.css">
+</head>
+<body>
+    <form action="/reservations/new" method="post" id="reservationform">
+    <div class="rigaform res">
+        <label for="tableselect">TABLE NUMBER:</label>
+        <input type="text" name="tableselect" id="tableselect" class="lastinput" disabled value="<%= nrtavolo %>">
+            
+    </div>
+    
+    <div class="rigaform res">
+        <label for="reservationcontact">CONTACT:</label>
+        <input type="text" id="reservationcontact" class="lastinput" name="reservationcontact">
+    </div>
+    
+    
+    <div class="rigaform res">
+        <label for="starttime">FROM</label>
+        <select name="starttime" id="starttime" class="lastinput" >
+        <option value="n1" <%= orainizio === 'n1' ? 'selected' : '' %> >18:30</option>
+        <option value="n2" <%= orainizio === 'n2' ? 'selected' : '' %>>18:45</option>
+        <option value="n3" <%= orainizio === 'n3' ? 'selected' : '' %>>19:00</option>
+        <option value="n4" <%= orainizio === 'n4' ? 'selected' : '' %>>19:15</option>
+        <option value="n5" <%= orainizio === 'n5' ? 'selected' : '' %>>19:30</option>
+        <option value="n6" <%= orainizio === 'n6' ? 'selected' : '' %>>19:45</option>
+        <option value="n7" <%= orainizio === 'n7' ? 'selected' : '' %>>20:00</option>
+        <option value="n8" <%= orainizio === 'n8' ? 'selected' : '' %>>20:15</option>
+        <option value="n9" <%= orainizio === 'n9' ? 'selected' : '' %>>20:30</option>
+        <option value="n10" <%= orainizio === 'n10' ? 'selected' : '' %>>20:45</option>
+        <option value="n11" <%= orainizio === 'n11' ? 'selected' : '' %>>21:00</option>
+        <option value="n12" <%= orainizio === 'n12' ? 'selected' : '' %>>21:15</option>
+        <option value="n13" <%= orainizio === 'n13' ? 'selected' : '' %>>21:30</option>
+        <option value="n14" <%= orainizio === 'n14' ? 'selected' : '' %>>21:45</option>
+        <option value="n15" <%= orainizio === 'n15' ? 'selected' : '' %>>22:00</option>
+        <option value="n16" <%= orainizio === 'n16' ? 'selected' : '' %>>22:15</option>
+        <option value="n17" <%= orainizio === 'n17' ? 'selected' : '' %>>22:30</option>
+        <option value="n18" <%= orainizio === 'n18' ? 'selected' : '' %>>22:45</option>
+        <option value="n19" <%= orainizio === 'n19' ? 'selected' : '' %>>23:00</option>
+        <option value="n20" <%= orainizio === 'n20' ? 'selected' : '' %>>23:15</option>
+        <option value="n21" <%= orainizio === 'n21' ? 'selected' : '' %>>23:30</option>
+        <option value="n22" <%= orainizio === 'n22' ? 'selected' : '' %>>23:45</option>
+        <option value="n23" <%= orainizio === 'n23' ? 'selected' : '' %>>24:00</option>
+        
+    
+        </select>
+    </div>
+
+    
+
+
+    
+
+    <div class="rigaform res">
+        <label for="endtime">TO</label>
+    <select name="endtime" id="endtime" class="lastinput">
+        <option value="n1" <%= orafine=== 'n1' ? 'selected' : '' %>>18:30</option>
+        <option value="n2" <%= orafine=== 'n2' ? 'selected' : '' %>>18:45</option>
+        <option value="n3" <%= orafine=== 'n3' ? 'selected' : '' %>>19:00</option>
+        <option value="n4" <%= orafine=== 'n4' ? 'selected' : '' %>>19:15</option>
+        <option value="n5" <%= orafine=== 'n5' ? 'selected' : '' %>>19:30</option>
+        <option value="n6" <%= orafine=== 'n6' ? 'selected' : '' %>>19:45</option>
+        <option value="n7" <%= orafine=== 'n7' ? 'selected' : '' %>>20:00</option>
+        <option value="n8" <%= orafine=== 'n8' ? 'selected' : '' %>>20:15</option>
+        <option value="n9" <%= orafine=== 'n9' ? 'selected' : '' %>>20:30</option>
+        <option value="n10" <%= orafine=== 'n10' ? 'selected' : '' %>>20:45</option>
+        <option value="n11" <%= orafine=== 'n11' ? 'selected' : '' %>>21:00</option>
+        <option value="n12" <%= orafine=== 'n12' ? 'selected' : '' %>>21:15</option>
+        <option value="n13" <%= orafine=== 'n13' ? 'selected' : '' %>>21:30</option>
+        <option value="n14" <%= orafine=== 'n14' ? 'selected' : '' %>>21:45</option>
+        <option value="n15" <%= orafine=== 'n15' ? 'selected' : '' %>>22:00</option>
+        <option value="n16" <%= orafine=== 'n16' ? 'selected' : '' %>>22:15</option>
+        <option value="n17" <%= orafine=== 'n17' ? 'selected' : '' %>>22:30</option>
+        <option value="n18" <%= orafine=== 'n18' ? 'selected' : '' %>>22:45</option>
+        <option value="n19" <%= orafine=== 'n19' ? 'selected' : '' %>>23:00</option>
+        <option value="n20" <%= orafine=== 'n20' ? 'selected' : '' %>>23:15</option>
+        <option value="n21" <%= orafine=== 'n21' ? 'selected' : '' %>>23:30</option>
+        <option value="n22" <%= orafine=== 'n22' ? 'selected' : '' %>>23:45</option>
+        <option value="n23" <%= orafine=== 'n23' ? 'selected' : '' %>>24:00</option>
+    </select>
+    </div>
+
+
+    <div class="rigaform res">
+        <label for="selectseats">SEATS: </label>
+        <input type="number" id="selectseats"  min="1" max="100" class="lastinput">
+    </div>
+    </form>
+    
+    <div class="rigaform bottoni">
+        <button id="cancelbtn">CANCELLAMI</button>
+        <button id="submitreservation" onclick="document.querySelector('#reservationform').submit();">SUBMIT</button>
+          
+    </div>
+    
+    
+    
+    
+<script>
+    document.querySelector('#cancelbtn').addEventListener('click',()=>{window.location.href="../reservations"});
+</script>
+</body>
