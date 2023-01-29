@@ -71,7 +71,7 @@ From this interface, the cook can check the pizzas that are ready and remove the
 Another important feature of the app is to manage reservations of the table of the restaurant.
 From a simple table, the user can see the status of each table during time slots of 15 minutes each.
 For each slot is indicated also the number of seats requested for the reservation and the table capacity.
-![enter image description here](https://i.postimg.cc/c4hYpQW6/reservations.png)
+![enter image description here](https://i.postimg.cc/d0hGfTXb/reservations.png)
 
 A new reservation can be placed simply clicking on the cell corresponding to the table and  the time slot required.
 ![enter image description here](https://i.postimg.cc/CLSkrcWW/newreservation.png)
